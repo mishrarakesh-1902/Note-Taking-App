@@ -1,4 +1,5 @@
-﻿import { useEffect, useState } from 'react'
+﻿import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import { api } from './api'
 import { useAuth } from './auth'
 import type { Note } from './notes'
@@ -26,6 +27,7 @@ export function Dashboard() {
         </div>
         <button className="secondary" onClick={signOut}>Log out</button>
       </header>
+      <div className="toolbar"><Link className="button" to="/notes/new">New note</Link></div>
       {error && <p className="error" role="alert">{error}</p>}
       <ul className="notes">
         {notes.map(note => (
