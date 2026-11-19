@@ -8,15 +8,20 @@ export function Dashboard() {
   const { token, user, signOut } = useAuth()
   const [notes, setNotes] = useState<Note[]>([])
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [attempt, setAttempt] = useState(0)
 
   useEffect(() => {
     if (!token) return
     const controller = new AbortController()
+    setLoading(true)
+    setError('')
     api<{ notes: Note[] }>('/notes', { signal: controller.signal }, token)
       .then(result => setNotes(result.notes))
       .catch(failure => { if (!controller.signal.aborted) setError(failure.message) })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false) })
     return () => controller.abort()
-  }, [token])
+  }, [token, attempt])
 
   const [deleting, setDeleting] = useState<string | null>(null)
   const [deleteError, setDeleteError] = useState('')
@@ -45,9 +50,16 @@ export function Dashboard() {
         <button className="secondary" onClick={signOut}>Log out</button>
       </header>
       <div className="toolbar"><Link className="button" to="/notes/new">New note</Link></div>
-      {error && <p className="error" role="alert">{error}</p>}
+      {loading && <p role="status">Loading notes…</p>}
+      {error && (
+        <div>
+          <p className="error" role="alert">{error}</p>
+          <button className="secondary" onClick={() => setAttempt(count => count + 1)}>Try again</button>
+        </div>
+      )}
+      {!loading && !error && notes.length === 0 && <p className="empty">No notes yet</p>}
       {deleteError && <p className="error" role="alert">{deleteError}</p>}
-      <ul className="notes">
+      {!loading && !error && notes.length > 0 && <ul className="notes">
         {notes.map(note => (
           <li className="note" key={note.id}>
             <h2>{note.title}</h2>
@@ -60,7 +72,7 @@ export function Dashboard() {
             </div>
           </li>
         ))}
-      </ul>
+      </ul>}
     </main>
   )
 }
