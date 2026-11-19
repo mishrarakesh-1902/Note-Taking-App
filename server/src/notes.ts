@@ -49,3 +49,13 @@ notes.put('/:id', async (req, res) => {
   if (!note) throw new ApiError(404, 'Note not found')
   res.json({ note })
 })
+
+notes.delete('/:id', async (req, res) => {
+  const id = parse(z.uuid(), req.params.id)
+  const { data, error } = await db.from('notes').delete()
+    .eq('user_id', req.userId!).eq('id', id).select('id').maybeSingle()
+
+  if (error) throw error
+  if (!data) throw new ApiError(404, 'Note not found')
+  res.sendStatus(204)
+})
