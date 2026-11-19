@@ -6,7 +6,7 @@ import type { Session } from './api'
 
 export function AuthForm({ mode, onSession }: {
   mode: 'signup' | 'login'
-  onSession?: (session: Session) => void
+  onSession: (session: Session) => void
 }) {
   const signup = mode === 'signup'
   const navigate = useNavigate()
@@ -34,8 +34,7 @@ export function AuthForm({ mode, onSession }: {
       const session = await api<Session>('/auth/' + mode, {
         method: 'POST', body: JSON.stringify({ email: address, password }),
       })
-      if (onSession) onSession(session)
-      else localStorage.setItem('notes.token', session.token)
+      onSession(session)
       navigate('/', { replace: true })
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : 'Please try again.')
