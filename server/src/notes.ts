@@ -19,3 +19,11 @@ notes.post('/', async (req, res) => {
   if (error) throw error
   res.status(201).json({ note })
 })
+
+notes.get('/', async (req, res) => {
+  const { data, error } = await db.from('notes').select(fields)
+    .eq('user_id', req.userId!).order('updated_at', { ascending: false })
+
+  if (error) throw error
+  res.json({ notes: data })
+})
