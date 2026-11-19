@@ -70,3 +70,11 @@ The SQL enables row-level security and revokes table access for browser-facing r
 3. Log out, sign up as user B, and confirm B's dashboard is empty.
 4. With B's bearer token, send GET, PUT with a valid note body, and DELETE to `/api/notes/<A-note-id>`. Each should return 404. Repeat without a token and expect 401.
 5. Log back in as A. Open the original note, edit it, reload to check persistence, and delete it. The dashboard should show “No notes yet.”
+
+## Deploy on Vercel
+
+Import the repository as a multi-service project with its root at the repository root. The root `vercel.json` routes `/api` requests to Express and sends other requests to Vite. React Router URLs open directly through the client fallback.
+
+Run the schema in Supabase and set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `JWT_SECRET` in the Vercel project environment for the server. Keep the frontend API base at its default `/api`.
+
+Run `vercel dev` from the repository root to exercise the two services together. After deploying, open `/login` and check that `/api/health` returns JSON before testing signup and notes.
