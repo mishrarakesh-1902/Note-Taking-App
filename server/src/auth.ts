@@ -25,3 +25,17 @@ auth.post('/signup', async (req, res) => {
   if (error) throw error
   res.status(201).json({ token: issueToken(user.id), user })
 })
+
+auth.post('/login', async (req, res) => {
+  const { email, password } = parse(credentials, req.body)
+  const { data, error } = await db.from('users')
+    .select('id,email,created_at,password_hash').eq('email', email).maybeSingle()
+
+  if (error) throw error
+  if (!data || !await bcrypt.compare(password, data.password_hash)) {
+    throw new ApiError(401, 'Invalid email or password')
+  }
+
+  const user = { id: data.id, email: data.email, created_at: data.created_at }
+  res.json({ token: issueToken(user.id), user })
+})
