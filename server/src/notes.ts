@@ -37,3 +37,15 @@ notes.get('/:id', async (req, res) => {
   if (!note) throw new ApiError(404, 'Note not found')
   res.json({ note })
 })
+
+notes.put('/:id', async (req, res) => {
+  const id = parse(z.uuid(), req.params.id)
+  const input = parse(noteInput, req.body)
+  const { data: note, error } = await db.from('notes')
+    .update({ ...input, updated_at: new Date().toISOString() })
+    .eq('user_id', req.userId!).eq('id', id).select(fields).maybeSingle()
+
+  if (error) throw error
+  if (!note) throw new ApiError(404, 'Note not found')
+  res.json({ note })
+})
