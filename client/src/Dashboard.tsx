@@ -34,6 +34,9 @@ export function Dashboard() {
           <li className="note" key={note.id}>
             <h2>{note.title}</h2>
             <p className="note-content">{note.content}</p>
+            <div className="note-actions">
+              <Link to={'/notes/' + note.id + '/edit'}>Edit</Link>
+            </div>
           </li>
         ))}
       </ul>
