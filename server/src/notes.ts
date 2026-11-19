@@ -1,7 +1,7 @@
 ﻿import { Router } from 'express'
 import { z } from 'zod'
 import { db } from './db.js'
-import { parse } from './errors.js'
+import { ApiError, parse } from './errors.js'
 
 export const notes = Router()
 const fields = 'id,user_id,title,content,created_at,updated_at'
@@ -26,4 +26,14 @@ notes.get('/', async (req, res) => {
 
   if (error) throw error
   res.json({ notes: data })
+})
+
+notes.get('/:id', async (req, res) => {
+  const id = parse(z.uuid(), req.params.id)
+  const { data: note, error } = await db.from('notes').select(fields)
+    .eq('user_id', req.userId!).eq('id', id).maybeSingle()
+
+  if (error) throw error
+  if (!note) throw new ApiError(404, 'Note not found')
+  res.json({ note })
 })
