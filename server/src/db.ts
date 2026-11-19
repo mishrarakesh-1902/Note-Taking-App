@@ -1,7 +1,6 @@
 ﻿import { createClient } from '@supabase/supabase-js'
+import { env } from './env.js'
 
-export function connectDatabase(url: string, serviceRoleKey: string) {
-  return createClient(url, serviceRoleKey, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  })
-}
+export const db = createClient(env.supabaseUrl, env.serviceRoleKey, {
+  auth: { persistSession: false, autoRefreshToken: false },
+})
