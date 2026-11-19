@@ -1,4 +1,4 @@
-﻿# Note Taking App
+# Note Taking App
 
 A private notes app with React, Express, and Supabase Postgres.
 

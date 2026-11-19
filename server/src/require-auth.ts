@@ -1,4 +1,4 @@
-﻿import type { RequestHandler } from 'express'
+import type { RequestHandler } from 'express'
 import jwt from 'jsonwebtoken'
 import { z } from 'zod'
 import { env } from './env.js'

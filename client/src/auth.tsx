@@ -1,4 +1,4 @@
-﻿import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
 import { api } from './api'

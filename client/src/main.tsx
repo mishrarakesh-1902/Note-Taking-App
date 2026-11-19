@@ -1,4 +1,4 @@
-﻿import { createRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthForm } from './AuthForm'
 import { AuthProvider, RequireAuth, useAuth } from './auth'

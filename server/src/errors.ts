@@ -1,4 +1,4 @@
-﻿import type { ErrorRequestHandler } from 'express'
+import type { ErrorRequestHandler } from 'express'
 import { z } from 'zod'
 
 export class ApiError extends Error {
