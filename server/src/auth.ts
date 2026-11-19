@@ -3,6 +3,7 @@ import { Router } from 'express'
 import { z } from 'zod'
 import { db } from './db.js'
 import { ApiError, parse } from './errors.js'
+import { requireAuth } from './require-auth.js'
 import { issueToken } from './token.js'
 
 export const auth = Router()
@@ -38,4 +39,13 @@ auth.post('/login', async (req, res) => {
 
   const user = { id: data.id, email: data.email, created_at: data.created_at }
   res.json({ token: issueToken(user.id), user })
+})
+
+auth.get('/me', requireAuth, async (req, res) => {
+  const { data: user, error } = await db.from('users')
+    .select(fields).eq('id', req.userId!).maybeSingle()
+
+  if (error) throw error
+  if (!user) throw new ApiError(401, 'Authentication required')
+  res.json({ user })
 })
