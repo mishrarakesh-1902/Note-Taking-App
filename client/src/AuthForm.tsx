@@ -62,7 +62,8 @@ export function AuthForm({ mode, onSession }: {
         {error && <p role="alert" className="error">{error}</p>}
         <button disabled={pending}>{pending ? 'Please wait…' : signup ? 'Sign up' : 'Log in'}</button>
       </form>
-      <p><Link to="/">Back to notes</Link></p>
+      {signup ? <p>Already registered? <Link to="/login">Log in</Link></p>
+        : <p>New here? <Link to="/signup">Create an account</Link></p>}
     </main>
   )
 }

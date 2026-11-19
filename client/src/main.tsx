@@ -9,6 +9,7 @@ createRoot(document.getElementById('root')!).render(
     <Routes>
       <Route path="/" element={<h1>Notes</h1>} />
       <Route path="/signup" element={<AuthForm key="signup" mode="signup" />} />
+      <Route path="/login" element={<AuthForm key="login" mode="login" />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
     
