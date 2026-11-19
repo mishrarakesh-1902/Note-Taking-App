@@ -3,11 +3,13 @@ import express from 'express'
 import { env } from './env.js'
 import { auth } from './auth.js'
 import { ApiError } from './errors.js'
+import { requireAuth } from './require-auth.js'
 
 const app = express()
 app.use(express.json({ limit: '128kb' }))
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
 app.use('/api/auth', auth)
+app.use('/api/notes', requireAuth)
 app.use((error: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   if (error instanceof ApiError) {
     res.status(error.status).json({ message: error.message })
