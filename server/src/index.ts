@@ -1,7 +1,10 @@
-﻿import express from 'express'
+﻿import 'dotenv/config'
+import express from 'express'
+import { env } from './env.js'
 
 const app = express()
-app.use(express.json())
+app.use(express.json({ limit: '128kb' }))
 app.get('/api/health', (_req, res) => res.json({ status: 'ok' }))
 
-app.listen(process.env.PORT || 3000)
+
+app.listen(env.port)
