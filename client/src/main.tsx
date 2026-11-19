@@ -4,6 +4,7 @@ import { AuthForm } from './AuthForm'
 import { AuthProvider, RequireAuth, useAuth } from './auth'
 import { Dashboard } from './Dashboard'
 import { NoteForm } from './NoteForm'
+import './styles.css'
 
 function AuthPage({ mode }: { mode: 'login' | 'signup' }) {
   const { token, signIn } = useAuth()
